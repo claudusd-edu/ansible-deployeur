@@ -1,0 +1,28 @@
+- name: Play 1
+  hosts:
+    - primary
+  vars_files:
+    - vars/vars.yml
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_user: debian
+    file_name: "ici"
+  tasks:
+    - name: Create user
+      ansible.builtin.user:
+        name: "{{ item.login }}"
+      become: yes
+      loop: "{{ users }}"
+
+    - name: "Set authorized key for user" 
+      ansible.posix.authorized_key:
+        user: "{{ item.login }}"
+        state: present
+        key: "{{ item.key }}"
+      become: yes
+      loop: "{{ users }}"
+    
+    - name: "Set authorized key for user" 
+      ansible.builtin.debug:
+        msg: "{{ item.login }}"
+      loop: "{{ users }}"
