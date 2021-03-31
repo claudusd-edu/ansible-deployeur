@@ -1,0 +1,18 @@
+key: value 
+key2: value
+key3: 6
+key4: 
+  key1: "toto"
+  key2: 9
+  key3:
+    - toto
+    - tutu
+  #totot ttuc
+  key4:
+    - name: tutu
+      numnber: 8
+    - name: ttt
+      truc: 
+        - t
+        - a 
+

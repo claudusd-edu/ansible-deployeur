@@ -6,18 +6,35 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
     ansible_user: debian
+    # ansible_become_pass: toto
     file_name: "ici"
   tasks:
     - name: Create user
       ansible.builtin.user:
         name: "{{ item.login }}"
+        password: $6$xyz$spwuoHJ2pJZNopKwAj/bo7SBT0tXyRDoe5pTGHFegBQv4a60jVLvIUy1UieEsnzo3RY0dn7hn92U9L28WV/DH1
+        groups:
+          - sudo
+        shell: /bin/bash
       become: yes
       loop: "{{ users }}"
+
+    - name: Remove Yassin user
+      ansible.builtin.user:
+        name: "yassin"
+        state: absent
+      become: yes
+    
+    - name: Remove Yassin home
+      ansible.builtin.file:
+        path: "/home/yassin"
+        state: absent
+      become: yes
 
     - name: "Set authorized key for user" 
       ansible.posix.authorized_key:
         user: "{{ item.login }}"
-        state: present
+        state: absent
         key: "{{ item.key }}"
       become: yes
       loop: "{{ users }}"
